@@ -1,0 +1,47 @@
+# funciones
+ 
+def buscar_producto(catalogo, codigo):
+    posicion = -1
+    for i in range(len(catalogo)):
+        if catalogo[i]["codigo"] == codigo:
+            posicion = i
+            break
+    return posicion
+ 
+ 
+# procesos
+ 
+def cargar_producto(catalogo, ventas):
+    codigo = int(input("Codigo: "))
+    if buscar_producto(catalogo, codigo) != -1:
+        print("Ese codigo ya existe")
+    else:
+        nombre = input("Nombre: ")
+        precio = int(input("Precio: "))
+        catalogo.append({"codigo": codigo, "nombre": nombre, "precio": precio})
+        ventas.append([0, 0, 0, 0, 0])
+        with open("productos.txt", "a") as f:
+            f.write(str(codigo) + ";" + nombre + ";" + str(precio) + "\n")
+ 
+ 
+catalogo = []
+ventas = []
+ 
+# uso el "a" para crear el archivo si no existe
+with open("productos.txt", "a") as f:
+    pass
+ 
+# recuperar lo guardado anterior
+
+with open("productos.txt", "r") as f:
+    for linea in f:
+        datos = linea.strip().split(";")
+        catalogo.append({"codigo": int(datos[0]), "nombre": datos[1], "precio": int(datos[2])})
+        ventas.append([0, 0, 0, 0, 0])
+ 
+opcion = 0
+while opcion != 4:
+    print("1. Cargar producto  2. Registrar venta  3. Ver informes  4. Salir")
+    opcion = int(input("Opcion: "))
+    if opcion == 1:
+        cargar_producto(catalogo, ventas)
